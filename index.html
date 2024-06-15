@@ -25,11 +25,19 @@
       }
 
       function showPosition(position) {
-        x.innerHTML =
-          "Latitude: " +
-          position.coords.latitude +
-          "<br>Longitude: " +
-          position.coords.longitude;
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
+
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            const locationName = data.display_name; // Extracting location name
+            x.innerHTML = `Location: ${locationName}`;
+          })
+          .catch((error) =>
+            console.log("Error fetching location name:", error)
+          );
       }
     </script>
   </body>
